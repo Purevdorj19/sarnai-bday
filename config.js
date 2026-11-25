@@ -78,8 +78,8 @@ window.GIFT = {
   // file    — эсвэл хавтсанд хийсэн mp3 файлын нэр. Хоёулаа хоосон '' бол хөгжимгүй.
   // volume  — дууны чанга: 0.05 (маш намуухан) … 0.3 (дунд). Анхдагч 0.15
   music: {
-    youtube: '_DUVvapF4Bk',
-    file: '',
+    youtube: '',
+    file: 'musicmp3.mp3',
     volume: 0.15,
   },
 
