@@ -322,7 +322,7 @@ nav.bottom button.on{background:var(--bg2);color:var(--rose)}
   <!-- Купон -->
   <section class="tab hidden" id="tab-cpn">
     <h2 class="section-h">🎟 Чамд зориулсан купонууд</h2>
-    <p class="section-p">Хэзээ ч ашиглаж болно. Хугацаа дуусахгүй 😊</p>
+    <p class="section-p">Хүссэн үедээ ашиглаарай, хугацаа нь хэзээ ч дуусахгүй 😊</p>
     <div class="coupons" id="cpnList"></div>
     <p class="coupon-note" id="cpnNote"></p>
     <button class="btn soft block" id="printBtn">🖨 Купонуудыг хэвлэх</button>
@@ -913,7 +913,7 @@ function openBday() {
     addConfetti(160); setTimeout(() => addConfetti(120), 700);
     playMelody();
     setTimeout(() => {
-      $('#bdayLetterWrap').innerHTML = letterHTML(G.name ? `Хайрт ${G.name} минь 🌸` : 'Чамд 🌸', false);
+      $('#bdayLetterWrap').innerHTML = letterHTML(G.birthdayHeading || (G.name ? `${G.name}, төрсөн өдрийн мэнд 🌸` : 'Төрсөн өдрийн мэнд 🌸'), false);
       const L = $('#bdayLetterWrap .letter'); L.style.marginTop = '24px'; L.style.textAlign = 'left';
       L.scrollIntoView({ behavior: 'smooth', block: 'start' });
       typeInto(L.querySelector('.body'), G.birthdayLetter || '', 32);
@@ -963,7 +963,7 @@ function openNy() {
   };
   const showLetter = () => {
     if (shown) return; shown = true; $('#nyTap').classList.add('hidden');
-    $('#nyLetterWrap').innerHTML = letterHTML(G.name ? `${G.name}, шинэ оны мэнд 🌸` : 'Шинэ оны мэнд 🌸', false);
+    $('#nyLetterWrap').innerHTML = letterHTML(G.newYearHeading || (G.name ? `${G.name}, шинэ оны мэнд 🌸` : 'Шинэ оны мэнд 🌸'), false);
     typeInto($('#nyLetterWrap .body'), G.newYearLetter || '', 32);
   };
   const onTap = (e) => {
