@@ -80,7 +80,7 @@ window.GIFT = {
   music: {
     youtube: '',
     file: 'musicmp3.mp3',
-    volume: 0.15,
+    volume: 0.3,
   },
 
   // ------------------------------------------------------------ CLOUD ХАДГАЛАЛТ (Firebase)
