@@ -73,6 +73,14 @@ window.GIFT = {
   // Жишээ: 'https://purevdorj19.github.io/sarnai-bday/'
   siteUrl: 'https://purevdorj19.github.io/sarnai-bday/',
 
+  // ------------------------------------------------------------ CLOUD ХАДГАЛАЛТ (Firebase)
+  // projectId — Firebase төслийн ID (Project settings → General → Project ID)
+  // docId     — нууц түлхүүр, ӨӨРЧЛӨХГҮЙ. Хоосон projectId бол зөвхөн утсан дээр хадгална.
+  cloud: {
+    projectId: 'sarnai-gift',
+    docId: 'Zk9WthnbBHaK8P06NiHCH7Vfikbe',
+  },
+
   // ------------------------------------------------------------ ХҮСЛҮҮД
   wishesIntro: '2027 онд биелүүлэх хүслээ энд бичээрэй. Биелсэн бүрийг нь тэмдэглэнэ 🌟',
   wishesExamples: ['Шинэ ном 5-ыг уншиж дуусгах', 'Нэг шинэ газар аялах', 'Өөртөө илүү их цаг гаргах'],

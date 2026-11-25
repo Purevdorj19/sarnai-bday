@@ -155,6 +155,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .coupon.reward .l{background:linear-gradient(160deg,#ffe7b0,#ffc2d4)}
 nav.bottom button{position:relative}
 .dot{position:absolute;top:4px;right:calc(50% - 18px);width:10px;height:10px;border-radius:50%;background:var(--deep);border:2px solid #fff}
+.sync{display:inline-block;margin-top:10px;font-size:11px;font-weight:800;color:var(--muted);background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:99px;padding:3px 10px}
+.sync.ok{color:#2f8a63}.sync.warn{color:#a15c00;background:#fff4dc}
 .coupon-note{text-align:center;color:var(--muted);font-size:13px;margin:16px 0 8px}
 
 /* Доод цэс */
@@ -261,6 +263,7 @@ nav.bottom button.on{background:var(--bg2);color:var(--rose)}
     <div class="flower">🌸</div>
     <h1 id="helloName">Сайн уу</h1>
     <p id="welcome"></p>
+    <div id="syncBadge" class="sync hidden"></div>
   </header>
 
   <!-- Нүүр -->
@@ -365,15 +368,60 @@ const G = window.GIFT || {};
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+const SYNC_KEYS = ['wishes', 'together', 'env', 'cpn', 'cpnOpen'];
 const store = {
   get(k, d) { try { const v = localStorage.getItem('gift_' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem('gift_' + k, JSON.stringify(v)); } catch (e) {} },
+  set(k, v) { try { localStorage.setItem('gift_' + k, JSON.stringify(v)); } catch (e) {} if (SYNC_KEYS.includes(k)) cloud.push(); },
 };
+
+/* ---------- Cloud хадгалалт (Firebase Firestore REST — SDK шаардлагагүй) */
+const cloud = (() => {
+  const C = G.cloud || {};
+  const on = !!(C.projectId && C.docId);
+  const url = on ? `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(C.projectId)}/databases/(default)/documents/gifts/${encodeURIComponent(C.docId)}` : '';
+  let timer = null, busy = false, again = false, ready = false;
+  const badge = (txt, cls) => { const b = document.getElementById('syncBadge'); if (!b) return; b.textContent = txt; b.className = 'sync ' + (cls || ''); };
+  const snapshot = () => { const o = {}; SYNC_KEYS.forEach((k) => { const v = store.get(k, null); if (v != null) o[k] = v; }); return o; };
+  async function send() {
+    if (busy) { again = true; return; }
+    busy = true; badge('☁️ Хадгалж байна…');
+    try {
+      const body = { fields: { data: { stringValue: JSON.stringify(snapshot()) }, updatedAt: { stringValue: new Date().toISOString() } } };
+      const r = await fetch(url, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      if (!r.ok) throw new Error(r.status);
+      badge('☁️ Хадгалагдсан', 'ok');
+    } catch (e) { badge('⚠ Интернэтгүй — утсан дээр хадгалсан', 'warn'); }
+    busy = false; if (again) { again = false; send(); }
+  }
+  return {
+    on,
+    push() { if (!on || PULLING || !ready) return; clearTimeout(timer); timer = setTimeout(send, 700); },
+    // Cloud дээрх хамгийн сүүлийн өгөгдлийг татаж, энэ утсан дээр хадгална
+    async pull() {
+      if (!on) return false;
+      clearTimeout(timer);
+      try {
+        const r = await fetch(url);
+        if (r.status === 404) { ready = true; send(); return false; }          // анх удаа — энэ утасны өгөгдлийг илгээнэ
+        if (!r.ok) throw new Error(r.status);
+        const j = await r.json(), data = JSON.parse(j.fields?.data?.stringValue || '{}');
+        PULLING = true;
+        SYNC_KEYS.forEach((k) => { try { if (k in data) localStorage.setItem('gift_' + k, JSON.stringify(data[k])); else localStorage.removeItem('gift_' + k); } catch (e) {} });
+        PULLING = false; ready = true;
+        badge('☁️ Хадгалагдсан', 'ok');
+        return true;
+      } catch (e) { PULLING = false; ready = true; badge('⚠ Интернэтгүй — утсан дээр хадгалсан', 'warn'); return false; }
+    },
+    async wipe() { if (!on) return; try { await fetch(url, { method: 'DELETE' }); } catch (e) {} },
+  };
+})();
+var PULLING = false, RESETTING = false;
 const PREVIEW = new URLSearchParams(location.search).has('preview');
 // ?reset — энэ төхөөрөмж дээрх хадгалсан бүх зүйлийг (хүсэл, дугтуй, купон, нууц үг) анхны байдалд нь оруулна
 if (new URLSearchParams(location.search).has('reset')) {
   try { Object.keys(localStorage).filter((k) => k.startsWith('gift_')).forEach((k) => localStorage.removeItem(k)); } catch (e) {}
-  location.replace(location.pathname);
+  RESETTING = true;
+  cloud.wipe().finally(() => location.replace(location.pathname));
 }
 const DATES = { birthday: new Date(G.birthday || '2026-12-24T00:00:00+08:00'), newYear: new Date(G.newYear || '2027-01-01T00:00:00+08:00') };
 const isOpen = (k) => PREVIEW || Date.now() >= DATES[k].getTime();
@@ -433,7 +481,15 @@ function startApp() {
   $('#nyDate').textContent = '🎀 2027 он';
   if (PREVIEW) { const b = document.createElement('div'); b.className = 'preview-badge'; b.textContent = 'Туршилтын горим — бүгд нээлттэй'; document.body.appendChild(b); }
   tick(); setInterval(tick, 1000);
-  renderEnvelopes(); renderWishes(); renderCoupons(); checkCouponUnlocks(true);
+  const renderAll = () => { renderEnvelopes(); renderWishes(); renderCoupons(); checkCouponUnlocks(true); };
+  renderAll();
+  if (cloud.on) {
+    cloud.pull().then((ok) => { if (ok) renderAll(); });
+    // Апп руу буцаж ороход (өөр төхөөрөмж дээр өөрчлөгдсөн байж болзошгүй) шинэчилнэ
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && !document.querySelector('.modal-back')) cloud.pull().then((ok) => { if (ok) renderAll(); });
+    });
+  }
 }
 
 /* ---------- Тоолуур */
@@ -825,7 +881,7 @@ function openNy() {
 }
 
 /* ---------- Эхлэх */
-if (!couponViewer() && store.get('unlocked', false)) unlock();
+if (!RESETTING && !couponViewer() && store.get('unlocked', false)) unlock();
 })();
 </script>
 </body>
