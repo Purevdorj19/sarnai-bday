@@ -1,0 +1,832 @@
+<!doctype html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffd6e4">
+<title>Чамд зориулав 🌸</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="config.js"></script>
+<style>
+:root{
+  --bg:#fff4f7; --bg2:#ffe3ec; --card:#ffffff; --pink:#ff9ab8; --pink2:#ffc2d4; --deep:#e8578a; --rose:#c23d6e;
+  --ink:#4b2638; --muted:#9a6b80; --line:#ffd3e0; --gold:#f6c177;
+  --shadow:0 10px 30px rgba(232,87,138,.15); --radius:24px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{font-family:'Nunito',system-ui,sans-serif;color:var(--ink);background:var(--bg);
+  background-image:radial-gradient(circle at 10% 0%,#ffd9e6 0,transparent 45%),radial-gradient(circle at 100% 30%,#ffe9f0 0,transparent 40%),radial-gradient(circle at 0% 100%,#ffe0ea 0,transparent 45%);
+  background-attachment:fixed;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+.hidden{display:none!important}
+.hand{font-family:'Caveat',cursive}
+
+/* Унах дэлбээ */
+.petals{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.petals span{position:absolute;top:-40px;font-size:18px;opacity:.55;animation:fall linear infinite}
+@keyframes fall{0%{transform:translate(0,-40px) rotate(0)}100%{transform:translate(60px,110vh) rotate(360deg)}}
+
+/* ------------------------------------------------ Нууц үг */
+#lock{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:20px}
+.lock-card{width:100%;max-width:340px;background:rgba(255,255,255,.85);backdrop-filter:blur(10px);border-radius:32px;padding:30px 24px;text-align:center;box-shadow:var(--shadow);border:1px solid var(--line)}
+.lock-card .big{font-size:46px;line-height:1}
+.lock-card h1{font-size:22px;margin:12px 0 4px}
+.lock-card p{margin:0;color:var(--muted);font-size:14px}
+.dots{display:flex;justify-content:center;gap:14px;margin:22px 0}
+.dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--pink);transition:.2s}
+.dots i.on{background:var(--deep);border-color:var(--deep);transform:scale(1.1)}
+.dots.shake{animation:shake .45s}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.pad button{height:62px;border-radius:20px;border:0;background:var(--bg2);font-size:24px;font-weight:700;transition:transform .1s,background .2s}
+.pad button:active{transform:scale(.94);background:var(--pink2)}
+.pad .ghost{background:transparent;font-size:20px}
+.lock-msg{min-height:20px;margin-top:14px;font-size:14px;color:var(--rose);font-weight:700}
+
+/* ------------------------------------------------ Үндсэн */
+#app{position:relative;z-index:1;max-width:560px;margin:0 auto;padding:22px 16px 110px}
+.hello{text-align:center;margin:8px 0 22px}
+.hello .flower{font-size:44px;display:inline-block;animation:sway 3s ease-in-out infinite}
+@keyframes sway{50%{transform:rotate(8deg) scale(1.05)}}
+.hello h1{font-size:30px;margin:6px 0;font-weight:900;color:var(--rose)}
+.hello p{white-space:pre-line;color:var(--muted);margin:0;line-height:1.55}
+.tab{animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.section-h{font-size:20px;font-weight:900;margin:4px 0 6px;color:var(--rose)}
+.section-p{color:var(--muted);margin:0 0 16px;font-size:14px;line-height:1.5}
+
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--line);padding:20px}
+.event{position:relative;overflow:hidden;margin-bottom:16px}
+.event::after{content:'';position:absolute;right:-30px;top:-30px;width:130px;height:130px;border-radius:50%;background:var(--bg2);z-index:0}
+.event>*{position:relative;z-index:1}
+.event .ev-top{display:flex;align-items:center;gap:12px}
+.event .ev-ico{font-size:36px}
+.event h2{margin:0;font-size:18px}
+.event small{color:var(--muted);font-weight:600}
+.cd{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
+.cd div{background:var(--bg);border-radius:16px;padding:10px 4px;text-align:center}
+.cd b{display:block;font-size:26px;font-weight:900;color:var(--deep);font-variant-numeric:tabular-nums}
+.cd span{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:14px 22px;font-weight:800;font-size:16px;
+  background:linear-gradient(135deg,#ff8fb3,#e8578a);color:#fff;box-shadow:0 8px 20px rgba(232,87,138,.35);transition:transform .15s}
+.btn:active{transform:scale(.96)}
+.btn.block{width:100%;margin-top:16px}
+.btn.soft{background:var(--bg2);color:var(--rose);box-shadow:none}
+.pulse{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 10px rgba(232,87,138,.12),0 8px 20px rgba(232,87,138,.35)}}
+.locked-note{margin-top:12px;font-size:13px;color:var(--muted);text-align:center}
+
+/* Дугтуй */
+.env-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.env{position:relative;border:0;background:linear-gradient(160deg,#fff,#ffeef4);border-radius:20px;padding:0;aspect-ratio:1.25;box-shadow:var(--shadow);overflow:hidden;text-align:center;border:1px solid var(--line)}
+.env::before{content:'';position:absolute;left:0;right:0;top:0;height:55%;background:linear-gradient(160deg,#ffd0df,#ffb3ca);clip-path:polygon(0 0,100% 0,50% 100%);transition:transform .4s}
+.env .seal{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:var(--deep);display:grid;place-items:center;font-size:20px;box-shadow:0 4px 10px rgba(0,0,0,.15);z-index:2}
+.env .lbl{position:absolute;left:8px;right:8px;bottom:12px;font-weight:800;font-size:14px;line-height:1.25}
+.env.opened::before{background:linear-gradient(160deg,#ffe6ee,#ffd6e3)}
+.env.opened .seal{background:var(--pink2)}
+.env:active{transform:scale(.97)}
+
+/* Хүсэл */
+.wish-form{display:flex;gap:8px;margin-bottom:14px}
+.wish-form input{flex:1;min-width:0;border:2px solid var(--line);border-radius:16px;padding:12px 14px;font:inherit;background:#fff;color:var(--ink);outline:none}
+.wish-form input:focus{border-color:var(--pink)}
+.wish-form .btn{padding:12px 18px}
+.wishes{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.wishes li{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+.wishes .chk{width:28px;height:28px;flex:none;border-radius:50%;border:2px solid var(--pink);background:#fff;display:grid;place-items:center;font-size:15px;padding:0}
+.wishes li.done .chk{background:var(--deep);border-color:var(--deep);color:#fff}
+.wishes li.done .t{text-decoration:line-through;color:var(--muted)}
+.wishes .t{flex:1;word-break:break-word}
+.wishes .del{border:0;background:none;color:var(--muted);font-size:18px;padding:4px}
+.progress{height:10px;border-radius:99px;background:var(--bg2);overflow:hidden;margin:4px 0 14px}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,#ffb3ca,#e8578a);border-radius:99px;transition:width .4s}
+.empty{color:var(--muted);text-align:center;padding:10px;font-size:14px}
+.seg{display:flex;gap:4px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px;margin:6px 0 12px;box-shadow:var(--shadow)}
+.seg button{flex:1;border:0;background:none;border-radius:999px;padding:10px 6px;font-weight:800;font-size:14px;color:var(--muted);transition:background .2s,color .2s}
+.seg button.on{background:linear-gradient(135deg,#ff8fb3,#e8578a);color:#fff}
+.wstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:2px 0 10px}
+.wstats div{background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 6px;text-align:center;box-shadow:var(--shadow)}
+.wstats b{display:block;font-size:24px;font-weight:900;color:var(--deep);line-height:1.1}
+.wstats span{font-size:12px;font-weight:700;color:var(--muted)}
+.wgroup{font-size:15px;font-weight:900;color:var(--rose);margin:16px 0 8px;display:flex;align-items:center;gap:6px}
+.wgroup span{background:var(--bg2);color:var(--rose);border-radius:99px;padding:1px 9px;font-size:12px}
+.seg button small{font-weight:800;opacity:.8;margin-left:4px}
+.wishes li.tg .chk{border-color:#c9a7ff}
+.wishes li.tg.done .chk{background:#a77bf0;border-color:#a77bf0}
+
+/* Купон */
+.coupons{display:grid;gap:14px}
+.coupon{position:relative;display:flex;align-items:stretch;background:#fff;border-radius:20px;box-shadow:var(--shadow);border:1px solid var(--line);overflow:hidden}
+.coupon .l{width:86px;flex:none;display:grid;place-items:center;font-size:34px;background:linear-gradient(160deg,#ffd0df,#ffb3ca);border-right:2px dashed #fff}
+.coupon .r{padding:14px 16px;flex:1}
+.coupon h3{margin:0 0 4px;font-size:17px}
+.coupon p{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+.coupon .use{margin-top:10px;border:0;border-radius:999px;background:var(--bg2);color:var(--rose);font-weight:800;padding:7px 14px;font-size:13px}
+.coupon .stamp{position:absolute;right:12px;top:12px;transform:rotate(-12deg);border:3px solid var(--deep);color:var(--deep);border-radius:10px;padding:2px 8px;font-weight:900;font-size:13px;opacity:.85}
+.coupon.used{opacity:.7}
+.ticket{text-align:center;background:#fffdfb;background-image:none}
+.ticket h3{margin:6px 0 4px}
+.tk-ico{font-size:46px;line-height:1}
+.tk-p{color:var(--muted);font-size:14px;line-height:1.5;margin:6px 0}
+.tk-l{display:block;text-align:left;font-weight:800;font-size:14px;margin:14px 0 6px;color:var(--rose)}
+.tk-in{width:100%;border:2px solid var(--line);border-radius:16px;padding:12px;font:inherit;resize:vertical;outline:none;color:var(--ink)}
+.tk-in:focus{border-color:var(--pink)}
+.tk-err{color:var(--deep);font-weight:800;font-size:13px;margin-top:6px}
+.tk-qr{margin:14px auto 8px;padding:12px;border-radius:20px;background:#fff;border:2px dashed var(--pink);display:inline-block}
+.tk-qr svg{display:block;max-width:100%;height:auto}
+.tk-warn{font-size:12px;color:#a15c00;background:#fff4dc;border-radius:12px;padding:8px}
+.tk-badge{display:inline-block;background:var(--bg2);color:var(--rose);font-weight:900;border-radius:99px;padding:6px 14px;margin-bottom:12px}
+.tk-wl{font-weight:800;color:var(--rose);margin-top:16px}
+.ticket .body{font-family:'Caveat',cursive;font-size:30px;line-height:1.3;color:#5a2b40;margin:6px 0 10px;white-space:pre-wrap;word-break:break-word}
+.tk-date{color:var(--muted);font-weight:700;font-size:14px;margin:10px 0 0}
+.viewer{position:relative;z-index:2;min-height:100vh;display:grid;place-items:center;padding:24px 16px}
+.coupon.locked{opacity:.85;background:#fff8fa}
+.coupon.locked .l{background:linear-gradient(160deg,#f3e6eb,#ead7df);filter:grayscale(.3)}
+.coupon.locked h3{color:var(--muted)}
+.lk-bar{height:8px;border-radius:99px;background:var(--bg2);overflow:hidden;margin-top:10px}
+.lk-bar i{display:block;height:100%;background:linear-gradient(90deg,#ffb3ca,#e8578a);border-radius:99px}
+.lk-n{font-size:12px;font-weight:800;color:var(--rose);margin-top:4px}
+.coupon.reward{border:2px solid var(--gold)}
+.coupon.reward .l{background:linear-gradient(160deg,#ffe7b0,#ffc2d4)}
+nav.bottom button{position:relative}
+.dot{position:absolute;top:4px;right:calc(50% - 18px);width:10px;height:10px;border-radius:50%;background:var(--deep);border:2px solid #fff}
+.coupon-note{text-align:center;color:var(--muted);font-size:13px;margin:16px 0 8px}
+
+/* Доод цэс */
+nav.bottom{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:5;display:flex;gap:4px;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);
+  padding:6px;border-radius:999px;box-shadow:0 10px 30px rgba(232,87,138,.25);border:1px solid var(--line);width:calc(100% - 32px);max-width:420px}
+nav.bottom button{flex:1;border:0;background:none;border-radius:999px;padding:8px 2px;font-size:11px;font-weight:800;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px}
+nav.bottom button span{font-size:20px}
+nav.bottom button.on{background:var(--bg2);color:var(--rose)}
+
+/* ------------------------------------------------ Overlay */
+.overlay{position:fixed;inset:0;z-index:30;overflow-y:auto;animation:fade .3s ease}
+.close{position:fixed;top:14px;right:14px;z-index:40;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.9);font-size:20px;box-shadow:var(--shadow)}
+.music{position:fixed;top:14px;left:14px;z-index:40;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.9);font-size:20px;box-shadow:var(--shadow)}
+.modal-back{position:fixed;inset:0;z-index:35;background:rgba(75,38,56,.35);backdrop-filter:blur(4px);display:grid;place-items:center;padding:18px;animation:fade .25s}
+.letter{width:100%;max-width:460px;max-height:85vh;overflow:auto;background:#fffdfb;border-radius:24px;padding:28px 24px;box-shadow:0 20px 60px rgba(0,0,0,.2);
+  background-image:repeating-linear-gradient(transparent 0 33px,#ffe1ea 33px 34px);background-position:0 70px;position:relative}
+.letter h3{margin:0 0 12px;font-size:20px;color:var(--rose);text-align:center}
+.letter .body{font-family:'Caveat',cursive;font-size:25px;line-height:34px;white-space:pre-wrap;color:#5a2b40;min-height:60px}
+.letter .sign{font-family:'Caveat',cursive;font-size:24px;text-align:right;margin-top:10px;color:var(--deep)}
+.letter .btn{margin-top:18px}
+
+/* Төрсөн өдөр */
+#bday{background:linear-gradient(180deg,#ffe3ec 0%,#fff4f7 60%,#ffe9f1 100%)}
+.bday-wrap{max-width:520px;margin:0 auto;padding:70px 18px 50px;text-align:center}
+.bday-wrap h1{font-size:30px;font-weight:900;color:var(--rose);margin:0 0 6px}
+.bday-wrap .sub{color:var(--muted);margin:0 0 20px}
+.cake{position:relative;width:260px;height:250px;margin:10px auto 10px}
+.cake .plate{position:absolute;bottom:0;left:10px;right:10px;height:18px;border-radius:50%;background:#fff;box-shadow:0 6px 16px rgba(232,87,138,.2)}
+.cake .layer{position:absolute;left:50%;transform:translateX(-50%);border-radius:18px}
+.cake .l1{bottom:10px;width:220px;height:80px;background:linear-gradient(180deg,#ff9ab8,#f27aa3)}
+.cake .l2{bottom:84px;width:170px;height:64px;background:linear-gradient(180deg,#ffd0df,#ffb3ca)}
+.cake .drip{position:absolute;left:0;right:0;top:0;height:20px;border-radius:18px 18px 0 0;background:#fff;
+  -webkit-mask:radial-gradient(circle at 10px 20px,transparent 9px,#000 10px) 0 0/22px 30px repeat-x;mask:radial-gradient(circle at 10px 20px,transparent 9px,#000 10px) 0 0/22px 30px repeat-x}
+.cake .dots2{position:absolute;inset:30px 16px 10px;background:radial-gradient(circle,#fff 2px,transparent 3px) 0 0/22px 22px;opacity:.7}
+.candles{position:absolute;bottom:146px;left:50%;transform:translateX(-50%);display:flex;gap:16px}
+.candle{position:relative;width:12px;height:46px;border-radius:4px;background:repeating-linear-gradient(45deg,#fff 0 6px,#ff9ab8 6px 12px);border:0;padding:0}
+.candle .flame{position:absolute;left:50%;top:-24px;width:14px;height:22px;transform:translateX(-50%);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+  background:radial-gradient(circle at 50% 70%,#fff8c2 0,#ffd36b 45%,#ff9f43 75%,transparent 76%);animation:flick .25s ease-in-out infinite alternate;filter:drop-shadow(0 0 8px #ffcf6b)}
+@keyframes flick{to{transform:translateX(-50%) scale(1.08,.94) rotate(3deg)}}
+.candle.out .flame{display:none}
+.candle.out::after{content:'';position:absolute;left:50%;top:-30px;width:6px;height:24px;transform:translateX(-50%);border-radius:50%;background:rgba(160,160,160,.5);filter:blur(3px);animation:smoke 1.2s forwards}
+@keyframes smoke{to{transform:translate(-50%,-30px) scale(2);opacity:0}}
+.topper{position:absolute;bottom:200px;left:50%;transform:translateX(-50%);font-family:'Caveat',cursive;font-weight:700;font-size:40px;color:var(--deep)}
+.bday-hint{font-weight:700;color:var(--rose);min-height:24px;margin:8px 0}
+
+/* Шинэ жил */
+#ny{background:radial-gradient(ellipse at top,#4a1b3c 0%,#2a0f24 60%,#1b0a18 100%);color:#fff}
+#nyCanvas{position:fixed;inset:0;width:100%;height:100%;display:block}
+.ny-ui{position:relative;z-index:2;min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 18px 40px;text-align:center;pointer-events:none}
+.ny-ui h1{font-size:38px;font-weight:900;margin:0;color:#ffe3ee;text-shadow:0 0 18px rgba(255,143,179,.8),0 0 40px rgba(232,87,138,.5)}
+.ny-ui .tap{opacity:.8;margin-top:10px;animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.35}}
+.ny-ui .letter{pointer-events:auto;margin-top:24px;text-align:left;color:var(--ink)}
+
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:45}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:60;background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-weight:700;font-size:14px;box-shadow:var(--shadow);max-width:90%;text-align:center;animation:fade .25s}
+.preview-badge{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:70;background:#4b2638;color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:99px}
+
+/* Хэвлэх */
+#printArea{display:none}
+@media print{
+  @page{margin:12mm}
+  body{background:#fff!important}
+  body>*:not(#printArea){display:none!important}
+  #printArea{display:block!important;color:#4b2638;font-family:'Nunito',sans-serif}
+  #printArea h1{text-align:center;color:#c23d6e;margin:0 0 4px}
+  #printArea .ps{text-align:center;color:#9a6b80;margin:0 0 14px}
+  .pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .pcoupon{border:2px dashed #e8578a;border-radius:14px;padding:12px 14px;break-inside:avoid;display:flex;gap:12px;align-items:center;-webkit-print-color-adjust:exact;print-color-adjust:exact;background:#fff4f7}
+  .pcoupon .pi{font-size:30px}
+  .pcoupon h3{margin:0 0 2px;font-size:16px}
+  .pcoupon p{margin:0;font-size:12px;color:#7a5566}
+  .pqr{margin:18px auto 0;text-align:center;break-inside:avoid}
+  .pqr #qr{display:inline-block;padding:10px;border:2px solid #ffc2d4;border-radius:14px;background:#fff}
+  .pqr p{margin:8px 0 0;font-size:13px}
+}
+@media (max-width:380px){.cd b{font-size:22px}.hello h1{font-size:26px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="petals" id="petals" aria-hidden="true"></div>
+
+<!-- ============================== НУУЦ ҮГ -->
+<section id="lock">
+  <div class="lock-card">
+    <div class="big">🌸</div>
+    <h1>Нууц үгээ оруулна уу</h1>
+    <p>Зөвхөн чамд зориулсан газар 💌</p>
+    <div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
+    <div class="pad" id="pad">
+      <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+      <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+      <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+      <button class="ghost" data-k="c" aria-label="Цэвэрлэх">✕</button><button data-k="0">0</button><button class="ghost" data-k="b" aria-label="Устгах">⌫</button>
+    </div>
+    <div class="lock-msg" id="lockMsg"></div>
+  </div>
+</section>
+
+<!-- ============================== ҮНДСЭН -->
+<main id="app" class="hidden">
+  <header class="hello">
+    <div class="flower">🌸</div>
+    <h1 id="helloName">Сайн уу</h1>
+    <p id="welcome"></p>
+  </header>
+
+  <!-- Нүүр -->
+  <section class="tab" id="tab-home">
+    <article class="card event" id="evBday">
+      <div class="ev-top"><div class="ev-ico">🎂</div><div><h2>Төрсөн өдөр хүртэл</h2><small id="bdayDate"></small></div></div>
+      <div class="cd" data-cd="birthday"></div>
+      <button class="btn block" data-open="bday">🎁 Бэлгээ нээх</button>
+      <div class="locked-note">Тэр өдөр болоход л нээгдэнэ 🤫</div>
+    </article>
+    <article class="card event" id="evNy">
+      <div class="ev-top"><div class="ev-ico">🎆</div><div><h2>Шинэ он хүртэл</h2><small id="nyDate"></small></div></div>
+      <div class="cd" data-cd="newYear"></div>
+      <button class="btn block" data-open="ny">✨ Салют үзэх</button>
+      <div class="locked-note">2027 оны 00:00 цагт нээгдэнэ 🤫</div>
+    </article>
+  </section>
+
+  <!-- Дугтуй -->
+  <section class="tab hidden" id="tab-env">
+    <h2 class="section-h">💌 Захидлууд</h2>
+    <p class="section-p">Хүссэн үедээ, хэрэгтэй үедээ нэгийг нээгээрэй.</p>
+    <div class="env-grid" id="envGrid"></div>
+  </section>
+
+  <!-- Хүсэл -->
+  <section class="tab hidden" id="tab-wish">
+    <h2 class="section-h">⭐ 2027 оны хүслүүд</h2>
+    <div class="seg" id="wishSeg"><button data-l="mine" class="on">🌸 Миний хүсэл</button><button data-l="together">🤝 Хамтдаа хийх</button></div>
+    <p class="section-p" id="wishIntro"></p>
+    <form class="wish-form" id="wishForm"><input id="wishInput" maxlength="120" placeholder="Шинэ хүсэл бичих…" autocomplete="off"><button class="btn">＋</button></form>
+    <div class="wstats" id="wishStats"></div>
+    <div class="progress"><i id="wishBar" style="width:0"></i></div>
+    <h3 class="wgroup">⏳ Биелүүлэх <span id="cntTodo"></span></h3>
+    <ul class="wishes" id="wishList"></ul>
+    <h3 class="wgroup">✅ Биелсэн <span id="cntDone"></span></h3>
+    <ul class="wishes" id="doneList"></ul>
+    <button class="btn soft block" id="wishShare">📤 Жагсаалтаа надад илгээх</button>
+  </section>
+
+  <!-- Купон -->
+  <section class="tab hidden" id="tab-cpn">
+    <h2 class="section-h">🎟 Чамд зориулсан купонууд</h2>
+    <p class="section-p">Хэзээ ч ашиглаж болно. Хугацаа дуусахгүй 😊</p>
+    <div class="coupons" id="cpnList"></div>
+    <p class="coupon-note" id="cpnNote"></p>
+    <button class="btn soft block" id="printBtn">🖨 Купонуудыг хэвлэх</button>
+  </section>
+</main>
+
+<nav class="bottom hidden" id="nav">
+  <button data-tab="home" class="on"><span>🏠</span>Нүүр</button>
+  <button data-tab="env"><span>💌</span>Захидал</button>
+  <button data-tab="wish"><span>⭐</span>Хүсэл</button>
+  <button data-tab="cpn"><span>🎟</span>Купон<i class="dot hidden" id="cpnDot"></i></button>
+</nav>
+
+<!-- ============================== ТӨРСӨН ӨДӨР -->
+<section class="overlay hidden" id="bday">
+  <button class="music" id="bdayMusic" title="Хөгжим">🎵</button>
+  <div class="bday-wrap">
+    <h1 id="bdayTitle"></h1>
+    <p class="sub">Нүдээ аниад нэг хүсэл бодоорой… тэгээд лаагаа үлээгээрэй 🕯</p>
+    <div class="cake">
+      <div class="plate"></div>
+      <div class="layer l1"><div class="dots2"></div><div class="drip"></div></div>
+      <div class="layer l2"><div class="drip"></div></div>
+      <div class="candles" id="candles"></div>
+      <div class="topper" id="topper"></div>
+    </div>
+    <div class="bday-hint" id="bdayHint">Лаа бүр дээр дараарай</div>
+    <button class="btn" id="blowAll">🌬 Бүгдийг нь үлээх</button>
+    <div id="bdayLetterWrap"></div>
+  </div>
+</section>
+
+<!-- ============================== ШИНЭ ЖИЛ -->
+<section class="overlay hidden" id="ny">
+  <canvas id="nyCanvas"></canvas>
+  <div class="ny-ui">
+    <h1 id="nyTitle"></h1>
+    <div class="tap" id="nyTap">Дэлгэц дээр дарж салют буудаарай ✨</div>
+    <div id="nyLetterWrap"></div>
+  </div>
+</section>
+
+<canvas id="fx"></canvas>
+<button class="close hidden" id="closeOv" aria-label="Хаах">✕</button>
+
+<!-- ============================== ХЭВЛЭХ ХУУДАС -->
+<div id="printArea">
+  <h1>🎟 Чамд зориулсан купонууд</h1>
+  <p class="ps" id="pSub"></p>
+  <div class="pgrid" id="pGrid"></div>
+  <div class="pqr"><div id="qr"></div><p>📱 Энэ кодыг уншуулаад нууц хуудсаа нээгээрэй 🌸</p></div>
+</div>
+
+<script src="qrcode.js"></script>
+<script>
+(() => {
+const G = window.GIFT || {};
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => [...document.querySelectorAll(s)];
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('gift_' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('gift_' + k, JSON.stringify(v)); } catch (e) {} },
+};
+const PREVIEW = new URLSearchParams(location.search).has('preview');
+// ?reset — энэ төхөөрөмж дээрх хадгалсан бүх зүйлийг (хүсэл, дугтуй, купон, нууц үг) анхны байдалд нь оруулна
+if (new URLSearchParams(location.search).has('reset')) {
+  try { Object.keys(localStorage).filter((k) => k.startsWith('gift_')).forEach((k) => localStorage.removeItem(k)); } catch (e) {}
+  location.replace(location.pathname);
+}
+const DATES = { birthday: new Date(G.birthday || '2026-12-24T00:00:00+08:00'), newYear: new Date(G.newYear || '2027-01-01T00:00:00+08:00') };
+const isOpen = (k) => PREVIEW || Date.now() >= DATES[k].getTime();
+
+function toast(msg) {
+  $$('.toast').forEach((t) => t.remove());
+  const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 2600);
+}
+
+/* ---------- Дэлбээ */
+(() => {
+  const box = $('#petals'), items = ['🌸', '💗', '🌷', '✿', '💮'];
+  for (let i = 0; i < 14; i++) {
+    const s = document.createElement('span');
+    s.textContent = items[i % items.length];
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.fontSize = 12 + Math.random() * 14 + 'px';
+    s.style.animationDuration = 9 + Math.random() * 10 + 's';
+    s.style.animationDelay = -Math.random() * 18 + 's';
+    box.appendChild(s);
+  }
+})();
+
+/* ---------- Нууц үг */
+let code = '';
+function drawDots() { $$('#dots i').forEach((d, i) => d.classList.toggle('on', i < code.length)); }
+function unlock() {
+  $('#lock').classList.add('hidden'); $('#app').classList.remove('hidden'); $('#nav').classList.remove('hidden');
+  store.set('unlocked', true); startApp();
+}
+$('#pad').onclick = (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  const k = b.dataset.k;
+  if (k === 'b') code = code.slice(0, -1);
+  else if (k === 'c') code = '';
+  else if (code.length < 4) code += k;
+  drawDots(); $('#lockMsg').textContent = '';
+  if (code.length === 4) setTimeout(() => {
+    if (code === String(G.password || '0703')) { $('#lockMsg').textContent = '💗'; setTimeout(unlock, 250); }
+    else { $('#dots').classList.add('shake'); $('#lockMsg').textContent = 'Буруу байна, дахиад оролдоорой 🙈';
+      setTimeout(() => { $('#dots').classList.remove('shake'); code = ''; drawDots(); }, 500); }
+  }, 120);
+};
+document.addEventListener('keydown', (e) => {
+  if ($('#lock').classList.contains('hidden')) return;
+  if (/^\d$/.test(e.key)) $(`#pad [data-k="${e.key}"]`).click();
+  if (e.key === 'Backspace') $('#pad [data-k="b"]').click();
+});
+
+/* ---------- Үндсэн апп */
+function startApp() {
+  $('#helloName').textContent = G.name ? `Сайн уу, ${G.name} 🌷` : 'Сайн уу 🌷';
+  $('#welcome').textContent = G.welcome || '';
+  const fmt = (d) => { const u = new Date(d.getTime() + 8 * 3600e3); return `${u.getUTCMonth() + 1}-р сарын ${u.getUTCDate()}`; };
+  $('#bdayDate').textContent = '🎀 ' + fmt(DATES.birthday);
+  $('#nyDate').textContent = '🎀 2027 он';
+  if (PREVIEW) { const b = document.createElement('div'); b.className = 'preview-badge'; b.textContent = 'Туршилтын горим — бүгд нээлттэй'; document.body.appendChild(b); }
+  tick(); setInterval(tick, 1000);
+  renderEnvelopes(); renderWishes(); renderCoupons(); checkCouponUnlocks(true);
+}
+
+/* ---------- Тоолуур */
+function tick() {
+  ['birthday', 'newYear'].forEach((k) => {
+    const el = $(`[data-cd="${k}"]`), card = el.closest('.event');
+    const left = DATES[k].getTime() - Date.now(), open = isOpen(k);
+    card.querySelector('.btn').classList.toggle('pulse', open);
+    card.querySelector('.locked-note').classList.toggle('hidden', open);
+    if (open && left <= 0) { el.innerHTML = `<div style="grid-column:1/-1"><b>🎉</b><span>Өнөөдөр болчихлоо!</span></div>`; return; }
+    const s = Math.max(0, Math.floor(left / 1000));
+    const parts = [[Math.floor(s / 86400), 'өдөр'], [Math.floor(s % 86400 / 3600), 'цаг'], [Math.floor(s % 3600 / 60), 'минут'], [s % 60, 'секунд']];
+    el.innerHTML = parts.map(([v, l]) => `<div><b>${String(v).padStart(2, '0')}</b><span>${l}</span></div>`).join('');
+  });
+}
+
+/* ---------- Таб */
+$('#nav').onclick = (e) => {
+  const b = e.target.closest('[data-tab]'); if (!b) return;
+  if (b.dataset.tab === 'cpn') $('#cpnDot').classList.add('hidden');
+  $$('#nav button').forEach((x) => x.classList.toggle('on', x === b));
+  $$('.tab').forEach((t) => t.classList.toggle('hidden', t.id !== 'tab-' + b.dataset.tab));
+  scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+/* ---------- Захидал (typewriter) */
+function typeInto(el, text, speed = 28) {
+  return new Promise((res) => {
+    let i = 0, done = false;
+    const chars = [...text];
+    const finish = () => { if (done) return; done = true; el.textContent = text; res(); };
+    el.closest('.letter')?.addEventListener('click', finish, { once: true });
+    (function step() {
+      if (done) return;
+      el.textContent = chars.slice(0, ++i).join('');
+      if (i >= chars.length) return finish();
+      setTimeout(step, chars[i - 1] === '\n' ? speed * 6 : speed);
+    })();
+  });
+}
+function letterHTML(title, withBtn) {
+  return `<div class="letter"><h3>${esc(title)}</h3><div class="body"></div>
+    ${G.from ? `<div class="sign">— ${esc(G.from)}</div>` : ''}${withBtn ? '<button class="btn block">Хаах 💗</button>' : ''}</div>`;
+}
+function openLetter(title, text) {
+  const back = document.createElement('div'); back.className = 'modal-back';
+  back.innerHTML = letterHTML(title, true);
+  document.body.appendChild(back);
+  const close = () => back.remove();
+  back.onclick = (e) => { if (e.target === back) close(); };
+  back.querySelector('.btn').onclick = close;
+  typeInto(back.querySelector('.body'), text, 18);
+}
+
+/* ---------- Дугтуйнууд */
+function renderEnvelopes() {
+  const opened = store.get('env', []);
+  $('#envGrid').innerHTML = (G.envelopes || []).map((e, i) =>
+    `<button class="env ${opened.includes(i) ? 'opened' : ''}" data-i="${i}"><div class="seal">${esc(e.icon || '💌')}</div><div class="lbl">${esc(e.title)}</div></button>`).join('');
+  $('#envGrid').onclick = (ev) => {
+    const b = ev.target.closest('.env'); if (!b) return;
+    const i = +b.dataset.i, e = G.envelopes[i];
+    const list = store.get('env', []); if (!list.includes(i)) { list.push(i); store.set('env', list); }
+    b.classList.add('opened');
+    openLetter(`${e.icon || '💌'} ${e.title}`, e.text);
+  };
+}
+
+/* ---------- Хүслүүд */
+function renderWishes() {
+  const LISTS = {
+    mine: { key: 'wishes', intro: G.wishesIntro, ex: G.wishesExamples, ph: 'Өөрийн хүслээ бичих…', title: 'Миний 2027 оны хүслүүд' },
+    together: { key: 'together', intro: G.togetherIntro, ex: G.togetherExamples, ph: 'Хамт хийх зүйл бичих…', title: 'Хамтдаа хийх зүйлс' },
+  };
+  let cur = store.get('wishTab', 'mine'); if (!LISTS[cur]) cur = 'mine';
+  const load = (k) => { let W = store.get(LISTS[k].key, null); if (!W) { W = (LISTS[k].ex || []).map((t) => ({ t, d: false })); store.set(LISTS[k].key, W); } return W; };
+  let W = load(cur);
+  const draw = () => {
+    const L = LISTS[cur];
+    $$('#wishSeg button').forEach((b) => {
+      const k = b.dataset.l, list = k === cur ? W : load(k), d = list.filter((w) => w.d).length;
+      b.classList.toggle('on', k === cur);
+      b.innerHTML = (k === 'mine' ? '🌸 Миний хүсэл' : '🤝 Хамтдаа') + `<small>${d}/${list.length}</small>`;
+    });
+    $('#wishIntro').textContent = L.intro || '';
+    $('#wishInput').placeholder = L.ph;
+    const done = W.filter((w) => w.d).length, total = W.length;
+    $('#wishStats').innerHTML = `<div><b>${total}</b><span>Нийт</span></div><div><b>${done}</b><span>Биелсэн</span></div><div><b>${total ? Math.round(done / total * 100) : 0}%</b><span>Гүйцэтгэл</span></div>`;
+    $('#wishBar').style.width = total ? (done / total * 100) + '%' : '0';
+    const item = (w, i) => `<li class="${w.d ? 'done' : ''} ${cur === 'together' ? 'tg' : ''}"><button class="chk" data-c="${i}" aria-label="${w.d ? 'Буцаах' : 'Биелсэн'}">${w.d ? '✓' : ''}</button><span class="t">${esc(w.t)}</span><button class="del" data-x="${i}" aria-label="Устгах">×</button></li>`;
+    const idx = W.map((w, i) => [w, i]);
+    $('#cntTodo').textContent = total - done; $('#cntDone').textContent = done;
+    $('#wishList').innerHTML = idx.filter(([w]) => !w.d).map(([w, i]) => item(w, i)).join('')
+      || `<li class="empty">${total ? 'Бүгдийг биелүүлчихлээ! 🎉' : 'Одоохондоо хоосон байна. Эхнийхээ бичээрэй ✍️'}</li>`;
+    $('#doneList').innerHTML = idx.filter(([w]) => w.d).map(([w, i]) => item(w, i)).join('')
+      || '<li class="empty">Биелсэн хүсэл энд харагдана ✨</li>';
+  };
+  draw();
+  $('#wishSeg').onclick = (e) => {
+    const b = e.target.closest('[data-l]'); if (!b || b.dataset.l === cur) return;
+    cur = b.dataset.l; store.set('wishTab', cur); W = load(cur); draw();
+  };
+  $('#wishForm').onsubmit = (e) => {
+    e.preventDefault(); const t = $('#wishInput').value.trim(); if (!t) return;
+    W.push({ t, d: false }); store.set(LISTS[cur].key, W); $('#wishInput').value = ''; draw();
+  };
+  $('#wishList').onclick = $('#doneList').onclick = (e) => {
+    const c = e.target.closest('[data-c]'), x = e.target.closest('[data-x]');
+    if (c) { const w = W[+c.dataset.c]; w.d = !w.d; if (w.d) { burst(e.clientX, e.clientY); toast(cur === 'together' ? 'Хамтдаа биелүүллээ! 🤝🎉' : 'Биелсэн! Баяр хүргэе 🎉'); } }
+    if (x) W.splice(+x.dataset.x, 1);
+    store.set(LISTS[cur].key, W); draw();
+    if (c) setTimeout(checkCouponUnlocks, 700);
+  };
+  // Хоёр жагсаалтыг бичвэр болгож хуваалцах (мессеж, чат руу)
+  $('#wishShare').onclick = async () => {
+    const fmt = (k) => load(k).map((w) => `${w.d ? '✅' : '⬜'} ${w.t}`).join('\n') || '—';
+    const text = `🌸 ${LISTS.mine.title}\n${fmt('mine')}\n\n🤝 ${LISTS.together.title}\n${fmt('together')}`;
+    try {
+      if (navigator.share) { await navigator.share({ text }); return; }
+      await navigator.clipboard.writeText(text); toast('Хуулчихлаа! Мессеж рүү Paste хийгээд илгээгээрэй 📋');
+    } catch (e) {
+      if (e && e.name === 'AbortError') return;
+      prompt('Доорх бичвэрийг хуулаад илгээгээрэй:', text);
+    }
+  };
+}
+
+/* ---------- Купонууд */
+/* QR / кодлох туслахууд */
+const b64e = (o) => { const bytes = new TextEncoder().encode(JSON.stringify(o)); let bin = ''; bytes.forEach((x) => { bin += String.fromCharCode(x); }); return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); };
+const b64d = (s) => { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; const bin = atob(s); return JSON.parse(new TextDecoder().decode(Uint8Array.from(bin, (c) => c.charCodeAt(0)))); };
+const siteBase = () => (G.siteUrl || (location.origin + location.pathname)).replace(/[?#].*$/, '');
+function qrSvg(text, px) {
+  const qr = qrcode(0, 'L'); qr.addData(text); qr.make();
+  const cell = Math.max(2, Math.floor(px / (qr.getModuleCount() + 8)));
+  return qr.createSvgTag({ cellSize: cell, margin: 4 }).replace(/fill="black"/g, 'fill="#7a1d45"').replace(/#000000/g, '#7a1d45');
+}
+const todayStr = () => { const d = new Date(); return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`; };
+
+/* Хүсэл биелүүлж нээгддэг купон */
+function wishesDone() { return ['wishes', 'together'].reduce((n, k) => n + (store.get(k, []) || []).filter((w) => w.d).length, 0); }
+function isLockedCoupon(i) { const c = G.coupons[i]; return !!(c && c.needWishes) && !store.get('cpnOpen', []).includes(i); }
+function checkCouponUnlocks(silent) {
+  const done = wishesDone(), open = store.get('cpnOpen', []); let fresh = [];
+  (G.coupons || []).forEach((c, i) => { if (c.needWishes && done >= c.needWishes && !open.includes(i)) { open.push(i); fresh.push(c); } });
+  if (!fresh.length) { renderCoupons(); return; }
+  store.set('cpnOpen', open); renderCoupons();
+  $('#cpnDot').classList.remove('hidden');
+  if (!silent) {
+    addConfetti(140);
+    const m = modal(`<div class="tk-badge">🎉 Шинэ купон нээгдлээ!</div><div class="tk-ico">${esc(fresh[0].icon)}</div><h3>${esc(fresh[0].title)}</h3>
+      <p class="tk-p">${esc(fresh[0].text)}</p><p class="tk-p"><b>${wishesDone()}</b> хүслээ биелүүлсэнд баяр хүргэе 🌟</p>
+      <button class="btn block" data-see>Купон руу очих 🎟</button><button class="btn soft block" data-close>Дараа үзье</button>`);
+    m.querySelector('[data-see]').onclick = () => { m.remove(); $('#nav [data-tab="cpn"]').click(); };
+  }
+}
+
+function renderCoupons() {
+  const used = store.get('cpn', {});
+  const U = (i) => (typeof used[i] === 'string' ? { d: used[i] } : used[i]);
+  $('#cpnNote').textContent = G.couponNote || '';
+  const done = wishesDone();
+  $('#cpnList').innerHTML = (G.coupons || []).map((c, i) => {
+    if (isLockedCoupon(i)) return `<div class="coupon locked">
+      <div class="l">🔒</div><div class="r"><h3>${esc(c.title)}</h3><p>Нийт <b>${c.needWishes}</b> хүсэл биелүүлэхэд нээгдэнэ 🤫</p>
+      <div class="lk-bar"><i style="width:${Math.min(100, done / c.needWishes * 100)}%"></i></div><div class="lk-n">${Math.min(done, c.needWishes)} / ${c.needWishes} биелсэн</div></div></div>`;
+    return `<div class="coupon ${U(i) ? 'used' : ''} ${c.needWishes ? 'reward' : ''}">
+    <div class="l">${esc(c.icon)}</div><div class="r"><h3>${esc(c.title)}</h3><p>${esc(c.text)}</p>
+    ${U(i) ? (U(i).q ? `<button class="use" data-q="${i}">QR харах</button>` : '') : `<button class="use" data-u="${i}">Ашиглах</button>`}</div>
+    ${U(i) ? `<div class="stamp">Ашигласан ${esc(U(i).d)}</div>` : ''}</div>`;
+  }).join('');
+  $('#cpnList').onclick = (e) => {
+    const u = e.target.closest('[data-u]'), q = e.target.closest('[data-q]');
+    if (u) couponModal(+u.dataset.u);
+    if (q) { const x = U(+q.dataset.q); showQr(G.coupons[+q.dataset.q], x.q); }
+  };
+  // Хэвлэх хувилбар
+  $('#pSub').textContent = G.name ? `${G.name}-д зориулав 🌸` : '';
+  $('#pGrid').innerHTML = (G.coupons || []).filter((c) => !c.needWishes).map((c) => `<div class="pcoupon"><div class="pi">${esc(c.icon)}</div><div><h3>${esc(c.title)}</h3><p>${esc(c.text)}</p></div></div>`).join('');
+}
+
+function modal(html) {
+  const back = document.createElement('div'); back.className = 'modal-back';
+  back.innerHTML = `<div class="letter ticket">${html}</div>`;
+  document.body.appendChild(back);
+  back.onclick = (e) => { if (e.target === back || e.target.closest('[data-close]')) back.remove(); };
+  return back;
+}
+function couponModal(i) {
+  const c = G.coupons[i];
+  const m = modal(`<div class="tk-ico">${esc(c.icon)}</div><h3>${esc(c.title)}</h3><p class="tk-p">${esc(c.text)}</p>
+    <label class="tk-l">${c.ask ? 'Ямар хүсэл биелүүлэхийг хүсэж байна вэ? ✨' : 'Нэмэлт үг (заавал биш)'}</label>
+    <textarea class="tk-in" maxlength="150" rows="3" placeholder="${c.ask ? 'Хүслээ энд бичээрэй…' : 'Жишээ нь: Энэ бямба гарагт 😊'}"></textarea>
+    <div class="tk-err hidden">Хүслээ бичээрэй 🙏</div>
+    <button class="btn block" data-go>🎟 QR код үүсгэх</button><button class="btn soft block" data-close>Болих</button>`);
+  const ta = m.querySelector('textarea'); setTimeout(() => ta.focus(), 50);
+  m.querySelector('[data-go]').onclick = (e) => {
+    const w = ta.value.trim();
+    if (c.ask && !w) { m.querySelector('.tk-err').classList.remove('hidden'); ta.focus(); return; }
+    const d = todayStr();
+    const q = siteBase() + '#c=' + b64e({ k: i, w, d: d.replace(/\./g, '') });
+    const used = store.get('cpn', {}); used[i] = { d, w, q }; store.set('cpn', used);
+    m.remove(); burst(e.clientX, e.clientY); renderCoupons(); showQr(c, q);
+  };
+}
+function showQr(c, q) {
+  const local = location.protocol === 'file:' && !G.siteUrl;
+  modal(`<div class="tk-ico">${esc(c.icon)}</div><h3>${esc(c.title)}</h3>
+    <div class="tk-qr">${qrSvg(q, 250)}</div>
+    <p class="tk-p"><b>📸 Энэ дэлгэцийг screenshot хийгээд надад явуулаарай!</b><br>QR кодыг уншуулахад чиний купон харагдана.</p>
+    ${local ? '<p class="tk-warn">⚠ Туршилт: сайтыг интернэтэд байршуулсны дараа QR код ажиллана.</p>' : ''}
+    <button class="btn block" data-close>Болсон 💗</button>`);
+}
+
+/* Таны утсаар QR уншуулахад нээгдэх хуудас */
+function couponViewer() {
+  const m = location.hash.match(/^#c=([\w-]+)/); if (!m) return false;
+  let o; try { o = b64d(m[1]); } catch (e) { return false; }
+  const c = (G.coupons || [])[o.k] || {};
+  o.i = o.i || c.icon; o.t = o.t || c.title; o.n = o.n || G.name;
+  if (/^\d{8}$/.test(o.d || '')) o.d = `${o.d.slice(0, 4)}.${o.d.slice(4, 6)}.${o.d.slice(6)}`;
+  $('#lock').classList.add('hidden');
+  const v = document.createElement('section'); v.className = 'viewer';
+  v.innerHTML = `<div class="letter ticket"><div class="tk-badge">🎟 Купон ашиглагдлаа</div>
+    <div class="tk-ico">${esc(o.i || '🎟')}</div><h3>${esc(o.t || '')}</h3>
+    ${o.w ? `<div class="tk-wl">💌 Хүсэл:</div><div class="body">${esc(o.w)}</div>` : '<p class="tk-p">Нэмэлт үггүй ашигласан.</p>'}
+    <p class="tk-date">📅 ${esc(o.d || '')}</p></div>`;
+  document.body.appendChild(v);
+  setTimeout(() => addConfetti(120), 300);
+  return true;
+}
+
+$('#printBtn').onclick = () => {
+  const q = $('#qr'); q.innerHTML = '';
+  try { const qr = qrcode(0, 'M'); qr.addData(location.origin + location.pathname); qr.make();
+    q.innerHTML = qr.createSvgTag({ cellSize: 4, margin: 2 }).replace(/fill="black"/g, 'fill="#c23d6e"').replace(/#000000/g, '#c23d6e'); } catch (e) {}
+  setTimeout(() => print(), 400);
+};
+
+/* ---------- Конфетти / жижиг тэсрэлт */
+const fx = $('#fx'), fctx = fx.getContext('2d'); let parts = [], fxRun = false;
+function sizeFx() { fx.width = innerWidth * devicePixelRatio; fx.height = innerHeight * devicePixelRatio; fctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0); }
+addEventListener('resize', sizeFx); sizeFx();
+const PINKS = ['#ff8fb3', '#e8578a', '#ffc2d4', '#ffd36b', '#ffffff', '#c9a7ff', '#ff6f9f'];
+function addConfetti(n, x, y, spread) {
+  for (let i = 0; i < n; i++) parts.push({
+    x: x ?? Math.random() * innerWidth, y: y ?? -20, vx: (Math.random() - .5) * (spread || 4), vy: y != null ? -Math.random() * 7 - 2 : Math.random() * 2 + 2,
+    r: Math.random() * 6 + 4, c: PINKS[i % PINKS.length], a: Math.random() * 6, va: (Math.random() - .5) * .3, life: 1, heart: Math.random() < .3,
+  });
+  if (!fxRun) { fxRun = true; requestAnimationFrame(fxLoop); }
+}
+function burst(x, y) { addConfetti(26, x, y, 10); }
+function fxLoop() {
+  fctx.clearRect(0, 0, innerWidth, innerHeight);
+  parts.forEach((p) => {
+    p.vy += .12; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.a += p.va; if (p.y > innerHeight + 30) p.life = 0;
+    fctx.save(); fctx.translate(p.x, p.y); fctx.rotate(p.a); fctx.fillStyle = p.c;
+    if (p.heart) { fctx.font = p.r * 2.4 + 'px serif'; fctx.fillText('💗', -p.r, p.r); }
+    else fctx.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2);
+    fctx.restore();
+  });
+  parts = parts.filter((p) => p.life > 0);
+  if (parts.length) requestAnimationFrame(fxLoop); else { fxRun = false; fctx.clearRect(0, 0, innerWidth, innerHeight); }
+}
+
+/* ---------- Хөгжим (Happy Birthday — WebAudio) */
+let actx = null, playing = false, stopAt = 0;
+function playMelody() {
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state === 'suspended') actx.resume();
+    const N = { G4: 392, A4: 440, B4: 493.88, C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99 };
+    const song = [['G4',.75],['G4',.25],['A4',1],['G4',1],['C5',1],['B4',2],['G4',.75],['G4',.25],['A4',1],['G4',1],['D5',1],['C5',2],
+      ['G4',.75],['G4',.25],['G5',1],['E5',1],['C5',1],['B4',1],['A4',2],['F5',.75],['F5',.25],['E5',1],['C5',1],['D5',1],['C5',3]];
+    let t = actx.currentTime + .1; const beat = .42;
+    song.forEach(([n, d]) => {
+      const o = actx.createOscillator(), g = actx.createGain(), o2 = actx.createOscillator(), g2 = actx.createGain();
+      o.type = 'triangle'; o.frequency.value = N[n]; o2.type = 'sine'; o2.frequency.value = N[n] * 2;
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.22, t + .03); g.gain.exponentialRampToValueAtTime(.001, t + d * beat * .98);
+      g2.gain.setValueAtTime(0, t); g2.gain.linearRampToValueAtTime(.05, t + .03); g2.gain.exponentialRampToValueAtTime(.001, t + d * beat * .9);
+      o.connect(g).connect(actx.destination); o2.connect(g2).connect(actx.destination);
+      o.start(t); o.stop(t + d * beat); o2.start(t); o2.stop(t + d * beat); t += d * beat;
+    });
+    playing = true; stopAt = t; setTimeout(() => { if (actx && actx.currentTime >= stopAt - .05) playing = false; }, (t - actx.currentTime) * 1000 + 100);
+  } catch (e) {}
+}
+$('#bdayMusic').onclick = () => {
+  if (playing && actx) { actx.close(); actx = null; playing = false; $('#bdayMusic').textContent = '🔇'; }
+  else { $('#bdayMusic').textContent = '🎵'; playMelody(); }
+};
+
+/* ---------- Overlay нээх/хаах */
+let nyStop = null;
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-open]'); if (!b) return;
+  const k = b.dataset.open, key = k === 'bday' ? 'birthday' : 'newYear';
+  if (!isOpen(key)) {
+    const d = Math.ceil((DATES[key] - Date.now()) / 86400000);
+    return toast(`Хүлээгээрэй 🤫 Дахиад ${d} өдөр үлдлээ`);
+  }
+  k === 'bday' ? openBday() : openNy();
+});
+$('#closeOv').onclick = () => {
+  $$('.overlay').forEach((o) => o.classList.add('hidden'));
+  $('#closeOv').classList.add('hidden'); document.body.style.overflow = '';
+  if (actx) { try { actx.close(); } catch (e) {} actx = null; playing = false; }
+  if (nyStop) { nyStop(); nyStop = null; }
+};
+function showOverlay(id) { $('#' + id).classList.remove('hidden'); $('#closeOv').classList.remove('hidden'); document.body.style.overflow = 'hidden'; $('#' + id).scrollTop = 0; }
+
+/* ---------- Төрсөн өдөр */
+function openBday() {
+  showOverlay('bday');
+  $('#bdayTitle').textContent = G.birthdayTitle || 'Төрсөн өдрийн мэнд!';
+  $('#topper').textContent = G.age || '';
+  $('#bdayLetterWrap').innerHTML = ''; $('#blowAll').classList.remove('hidden');
+  $('#bdayHint').textContent = 'Лаа бүр дээр дараарай';
+  $('#candles').innerHTML = Array.from({ length: 5 }, () => '<button class="candle" aria-label="Лаа"><span class="flame"></span></button>').join('');
+  const check = () => {
+    const left = $$('#candles .candle:not(.out)').length;
+    if (left) { $('#bdayHint').textContent = `Дахиад ${left} лаа үлдлээ 🕯`; return; }
+    $('#bdayHint').textContent = 'Хүсэл чинь заавал биелнэ ✨';
+    $('#blowAll').classList.add('hidden');
+    addConfetti(160); setTimeout(() => addConfetti(120), 700);
+    playMelody();
+    setTimeout(() => {
+      $('#bdayLetterWrap').innerHTML = letterHTML(G.name ? `Хайрт ${G.name} минь 🌸` : 'Чамд 🌸', false);
+      const L = $('#bdayLetterWrap .letter'); L.style.marginTop = '24px'; L.style.textAlign = 'left';
+      L.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      typeInto(L.querySelector('.body'), G.birthdayLetter || '', 32);
+    }, 1400);
+  };
+  $('#candles').onclick = (e) => { const c = e.target.closest('.candle'); if (!c || c.classList.contains('out')) return; c.classList.add('out'); check(); };
+  $('#blowAll').onclick = () => { $$('#candles .candle').forEach((c, i) => setTimeout(() => { c.classList.add('out'); if (i === 4) check(); }, i * 160)); };
+}
+
+/* ---------- Шинэ жил: салют */
+function openNy() {
+  showOverlay('ny');
+  $('#nyTitle').textContent = G.newYearTitle || 'Шинэ оны мэнд!';
+  $('#nyLetterWrap').innerHTML = ''; $('#nyTap').classList.remove('hidden');
+  const cv = $('#nyCanvas'), cx = cv.getContext('2d');
+  let W, H, rockets = [], sparks = [], run = true, taps = 0, shown = false;
+  const size = () => { W = innerWidth; H = innerHeight; cv.width = W * devicePixelRatio; cv.height = H * devicePixelRatio; cx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0); };
+  size(); addEventListener('resize', size);
+  const COLS = ['#ff8fb3', '#ffd1e0', '#ffd36b', '#c9a7ff', '#ffffff', '#ff6f9f', '#9fe7ff'];
+  const launch = (tx, ty) => rockets.push({ x: tx ?? W * (.15 + Math.random() * .7), y: H, tx: tx ?? W * (.15 + Math.random() * .7), ty: ty ?? H * (.15 + Math.random() * .3), c: COLS[Math.random() * COLS.length | 0] });
+  const explode = (x, y, c) => {
+    const n = 70 + Math.random() * 40, heart = Math.random() < .35;
+    for (let i = 0; i < n; i++) {
+      let vx, vy;
+      if (heart) { const t = i / n * Math.PI * 2; vx = 16 * Math.sin(t) ** 3 / 4.5; vy = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)) / 4.5; }
+      else { const a = Math.random() * Math.PI * 2, s = Math.random() * 4.5 + 1; vx = Math.cos(a) * s; vy = Math.sin(a) * s; }
+      sparks.push({ x, y, vx, vy, c: Math.random() < .2 ? '#fff' : c, life: 1, d: .008 + Math.random() * .012 });
+    }
+  };
+  const loop = () => {
+    if (!run) return;
+    cx.globalCompositeOperation = 'destination-out'; cx.fillStyle = 'rgba(0,0,0,.22)'; cx.fillRect(0, 0, W, H);
+    cx.globalCompositeOperation = 'lighter';
+    rockets.forEach((r) => {
+      r.x += (r.tx - r.x) * .06; r.y += (r.ty - r.y) * .06 - 1.5;
+      cx.fillStyle = r.c; cx.beginPath(); cx.arc(r.x, r.y, 2.5, 0, 7); cx.fill();
+      if (r.y <= r.ty + 4) { r.dead = true; explode(r.x, r.y, r.c); }
+    });
+    rockets = rockets.filter((r) => !r.dead);
+    sparks.forEach((s) => {
+      s.vx *= .985; s.vy = s.vy * .985 + .035; s.x += s.vx; s.y += s.vy; s.life -= s.d;
+      cx.globalAlpha = Math.max(0, s.life); cx.fillStyle = s.c; cx.beginPath(); cx.arc(s.x, s.y, 2, 0, 7); cx.fill();
+    });
+    cx.globalAlpha = 1; sparks = sparks.filter((s) => s.life > 0);
+    if (Math.random() < .035) launch();
+    requestAnimationFrame(loop);
+  };
+  const showLetter = () => {
+    if (shown) return; shown = true; $('#nyTap').classList.add('hidden');
+    $('#nyLetterWrap').innerHTML = letterHTML(G.name ? `${G.name}, шинэ оны мэнд 🌸` : 'Шинэ оны мэнд 🌸', false);
+    typeInto($('#nyLetterWrap .body'), G.newYearLetter || '', 32);
+  };
+  const onTap = (e) => {
+    if (e.target.closest('.letter') || e.target.closest('.close')) return;
+    launch(e.clientX, e.clientY); taps++; if (taps >= 3) showLetter();
+  };
+  $('#ny').addEventListener('pointerdown', onTap);
+  for (let i = 0; i < 4; i++) setTimeout(() => launch(), i * 350);
+  const auto = setTimeout(showLetter, 6000);
+  loop();
+  nyStop = () => { run = false; clearTimeout(auto); $('#ny').removeEventListener('pointerdown', onTap); removeEventListener('resize', size); cx.clearRect(0, 0, W, H); };
+}
+
+/* ---------- Эхлэх */
+if (!couponViewer() && store.get('unlocked', false)) unlock();
+})();
+</script>
+</body>
+</html>
