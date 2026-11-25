@@ -73,6 +73,16 @@ window.GIFT = {
   // Жишээ: 'https://purevdorj19.github.io/sarnai-bday/'
   siteUrl: 'https://purevdorj19.github.io/sarnai-bday/',
 
+  // ------------------------------------------------------------ АРЫН ХӨГЖИМ
+  // youtube — YouTube видеоны ID (watch?v= гэсний ард байх хэсэг). Бөглөсөн бол үүнийг тоглуулна.
+  // file    — эсвэл хавтсанд хийсэн mp3 файлын нэр. Хоёулаа хоосон '' бол хөгжимгүй.
+  // volume  — дууны чанга: 0.05 (маш намуухан) … 0.3 (дунд). Анхдагч 0.15
+  music: {
+    youtube: '_DUVvapF4Bk',
+    file: '',
+    volume: 0.15,
+  },
+
   // ------------------------------------------------------------ CLOUD ХАДГАЛАЛТ (Firebase)
   // projectId — Firebase төслийн ID (Project settings → General → Project ID)
   // docId     — нууц түлхүүр, ӨӨРЧЛӨХГҮЙ. Хоосон projectId бол зөвхөн утсан дээр хадгална.
